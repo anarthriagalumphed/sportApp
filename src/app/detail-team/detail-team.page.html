@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Detail Team
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="team" class="ion-padding">
+  <div style="display: flex; justify-content: center;">
+    <img src="{{ team.strTeamBadge }}" alt="" width="150px">
+  </div>
+  <div class="ion-text-center">
+    <p>{{ team.intFormedYear }}</p>
+    <p>{{ team.strCountry }}</p>
+  </div>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ team.strTeam }} ({{ team.strAlternate }})</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p id="deskripsi">{{ team.strDescriptionEN }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="players && players.length > 0">
+    <ion-card-header>
+      <ion-card-title>Active Players</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let player of players">
+          <ion-avatar slot="start">
+            <img [src]="player.strThumb" alt="Player Avatar">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ player.strPlayer }}</h2>
+            <p>{{ player.strPosition }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

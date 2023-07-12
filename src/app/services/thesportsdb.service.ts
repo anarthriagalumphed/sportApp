@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,16 +14,6 @@ export class TheSportsDBService {
 
   getTeams() {
     const url = `${this.baseUrl}${this.apiKey}/search_all_teams.php?l=English%20League%20Championship`;
-    return this.http.get(url);
-  }
-
-  getTeamsByCountry(strCountry: string) {
-    const url = `${this.baseUrl}${this.apiKey}/search_all_teams.php?s=Soccer&c=${strCountry}`;
-    return this.http.get(url);
-  }
-
-  getCountry() {
-    const url = `${this.baseUrl}${this.apiKey}/all_countries.php`;
     return this.http.get(url);
   }
 
@@ -61,11 +52,39 @@ export class TheSportsDBService {
     const url = `${this.baseUrl}${this.apiKey}/lookupteam.php?id=${teamId}`;
     return this.http.get(url);
   }
+  getPlayersByTeamAndName(teamName: string, playerName: string) {
+    const url = `${this.baseUrl}${this.apiKey}/searchplayers.php?t=${teamName}&p=${playerName}`;
+    return this.http.get(url).pipe(
+      map((data: any) => data.player)
+    );
+  }
+
+  //above is last commit 
 
 
+  searchPlayers(searchTerm: string) {
+    const url = `${this.baseUrl}${this.apiKey}/searchplayers.php?p=${searchTerm}`;
+    return this.http.get(url).pipe(
+      map((data: any) => data.player)
+    );
+  }
 
+  getPlayerById(playerId: string) {
+    const url = `${this.baseUrl}${this.apiKey}/lookupplayer.php?id=${playerId}`;
+    return this.http.get(url);
+  }
+  // sampai sini terakhir work 
 
+  getActivePlayersByTeamId(teamId: string) {
+    const url = `${this.baseUrl}${this.apiKey}/lookup_all_players.php?id=${teamId}`;
+    return this.http.get(url);
+  }
+  //work
 
+  getAllPlayers() {
+    const url = `${this.baseUrl}${this.apiKey}/searchplayers.php?p=`
+    return this.http.get(url);
+  }
 
   // Tambahkan metode lain sesuai dengan kebutuhan proyek Anda, seperti mendapatkan detail olahraga, jadwal pertandingan, dll.
 }

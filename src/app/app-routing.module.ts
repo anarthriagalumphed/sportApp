@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { DetailTeamPage } from './detail-team/detail-team.page';
 import { DetailTeamByCountryPage } from './detail-team-by-country/detail-team-by-country.page';
-
-
+import { PlayerDetailPage } from './player-detail/player-detail.page';
 
 const routes: Routes = [
   {
@@ -21,10 +20,12 @@ const routes: Routes = [
   },
   { path: 'detailTeamByCountry/:id/:country', component: DetailTeamByCountryPage },
   {
-    path: 'player-datail',
-    loadChildren: () => import('./player-datail/player-datail.module').then( m => m.PlayerDatailPageModule)
+    path: 'player-detail',
+    loadChildren: () => import('./player-detail/player-detail.module').then(m => m.PlayerDetailPageModule)
   },
+  { path: 'player-detail/:playerId', component: PlayerDetailPage }, // Tambahkan rute untuk halaman PlayerDetailPage dengan parameter playerId
 ];
+
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })

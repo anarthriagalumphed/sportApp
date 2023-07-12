@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Detail Player
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="player" class="ion-padding">
+  <div style="display: flex; justify-content: center;">
+    <img [src]="player.strThumb" alt="" width="150px">
+  </div>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ player.strPlayer }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p id="deskripsi">{{ player.strDescriptionEN }}</p>
+      <p>Team: {{ player.strTeam }}</p>
+      <!-- Add other player details as needed -->
+    </ion-card-content>
+  </ion-card>
+</ion-content>

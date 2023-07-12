@@ -1,20 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TheSportsDBService } from '../services/thesportsdb.service';
-import { OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 
-
-interface Team {
-  idTeam: number;
-  idSoccerXML: string;
-  idAPIfootball: string;
-  intLoved: string | null;
-  strTeam: string;
-  strDescriptionEN: string;
-  intFormedYear: number;
-  strAlternate: string;
-  strTeamBadge: string;
-  strCountry: string;
+interface Player {
+  idPlayer: string;
+  strPlayer: string;
+  strThumb: string;
+  // Add other player properties as needed
 }
 
 @Component({
@@ -24,48 +16,46 @@ interface Team {
 })
 export class Tab3Page implements OnInit {
 
-  teams: any[] = [];
-  selectedCountry: string = 'england';
-  countries: any[] = [];
-  filteredTeams: Team[] = [];
+  players: Player[] = [];
+  selectedTeam: number = 123; // Replace with your default team ID
+  teams: any[] = []; // Modify the structure of the teams array to match the response from the API
+  filteredPlayers: Player[] = [];
 
-  constructor(private TheSportsDBService: TheSportsDBService, private navCtrl: NavController) { }
-
+  constructor(private theSportsDBService: TheSportsDBService, private navCtrl: NavController) { }
 
   ngOnInit() {
-    this.onSearchTeamByCountry();
-    this.fetchDataCountry();
+    this.onSearchPlayersByTeam();
+    this.fetchDataTeams();
   }
 
-  onSearchTeamByCountry() {
-    this.TheSportsDBService.getTeamsByCountry(this.selectedCountry).subscribe((data: any) => {
-      this.teams = data.teams;
-      this.filteredTeams = this.teams;
-      console.log(data);
-      // Lakukan pemrosesan data sesuai kebutuhan Anda
+  onSearchPlayersByTeam() {
+    this.theSportsDBService.getPlayersByTeam(this.selectedTeam.toString()).subscribe((data: any) => {
+      this.players = data.player;
+      this.filteredPlayers = this.players;
+      // Perform data processing as needed
     });
-
   }
 
-  fetchDataCountry() {
-    this.TheSportsDBService.getCountry().subscribe((data: any) => {
-      this.countries = data.countries;
-      console.log(data);
-    })
+  fetchDataTeams() {
+    this.theSportsDBService.getTeams().subscribe((data: any) => {
+      this.teams = data.teams;
+    });
   }
 
-  openDetailTeam(idTeam: number) {
-    this.navCtrl.navigateForward('/detailTeamByCountry/' + idTeam + '/' + this.selectedCountry);
-    console.log(idTeam);
+  openPlayerDetails(playerId: string) {
+    this.navCtrl.navigateForward(`/player-detail/${playerId}`);
   }
 
-  filterTeams(searchTerm: string) {
+  filterPlayers(searchTerm: string) {
     if (searchTerm === '') {
-      this.filteredTeams = this.teams;
+      this.filteredPlayers = this.players;
     } else {
-      this.filteredTeams = this.teams.filter(team =>
-        team.strTeam.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      this.theSportsDBService.searchPlayers(searchTerm).subscribe((data: any) => {
+        this.filteredPlayers = data;
+      });
     }
   }
+  //ini adalah last commit yang work//
 }
+
+
